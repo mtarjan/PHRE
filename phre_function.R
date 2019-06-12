@@ -2,6 +2,8 @@
 
 ##Tarjan LM, Tinker MT (2016) Permissible Home Range Estimation (PHRE) in Restricted Habitats: A New Algorithm and an Evaluation for Sea Otters. PLoS ONE 11(3): e0150547. https://doi.org/10.1371/journal.pone.0150547
 
+##minor updates made on 6/2019. changes noted in comments
+
 ##code to write the phre function for generalized layers
 ##Max Tarjan; ltarjan@ucsc.edu
 ##June 26, 2015
@@ -71,7 +73,8 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
   ##define the area of tiny fragment polygons (4 pixles or smaller)
   min.poly.size<-4*((HR.rast@extent@xmax-HR.rast@extent@xmin)/HR.rast@ncols)^2
   ##convert HR.rast to polygons, which denote the permissible home range
-  HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=4, dissolve=T)
+  HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=8, dissolve=T)
+  #updated digits from 4 to 8 on 6/2019
   
   ##remove polygons that are 4 pixels or smaller
   s<-"polyID"
@@ -86,7 +89,7 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
   HR.polys<-Polygons(HR.polys, ID=s) #convert to polygons object
   HR.polys<-checkPolygonsHoles(HR.polys) #assign holes correctly
   HR.polys<-SpatialPolygons(list(HR.polys)) #convert to spatial polygons
-  HR.polys<-gSimplify(HR.polys, tol=20)
+  #HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
   
   list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
 }
