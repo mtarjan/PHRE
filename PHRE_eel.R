@@ -1,6 +1,7 @@
-##apply phre function to sea otter data
-##Max Tarjan; ltarjan@ucsc.edu
-##July 29, 2014
+##apply phre function to eel data
+##M Tarjan
+##July 11, 2019
+
 library(rgeos)
 library(readxl)
 library(ks)
