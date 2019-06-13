@@ -37,12 +37,13 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
     landscape<-cbind(landscape,raster::extract(rast[[r]], locs[,1:2], na.rm=F, method='bilinear'))##calculate the raster values at locs
     array<-cbind(array, raster::extract(rast[[r]], array[,1:2], na.rm=F, method='bilinear'))##add raster values to array
   }
+  array<-array[complete.cases(array),] ##remove array areas that don't have raster coverage; added 6/2019
   if (length(is.na(landscape[,1]))>length(landscape)/2) {
     print('Warning: Raster layers do not cover the extent of the location data')
   }
   ##calculate kernel density values at each point in the grid array; kde function is generated using landscape variables of re-sight locations
   if (smoother[1]=='default') {
-    kd<-kde(x=na.omit(landscape), eval.points=array[,3:dim(array)[2]])
+    kd<-kde(x=na.omit(landscape), eval.points=array[,3:ncol(array)])
   } else {
     kd<-kde(x=na.omit(landscape), H=smoother, eval.points=array[,3:dim(array)[2]])
   }
@@ -89,7 +90,7 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
   HR.polys<-Polygons(HR.polys, ID=s) #convert to polygons object
   HR.polys<-checkPolygonsHoles(HR.polys) #assign holes correctly
   HR.polys<-SpatialPolygons(list(HR.polys)) #convert to spatial polygons
-  #HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
+  HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
   
   list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
 }
