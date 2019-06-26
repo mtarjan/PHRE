@@ -27,7 +27,7 @@ phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function t
   max.y<-max(locs[,2])+y.range*.5
   ##create coordinates for grid array (used to back-translate kde estimate)
   ##set resolution of grid array
-  if (exists('resolution', mode="numeric")==F) {resolution<-250}
+  if (missing('resolution')) {resolution<-500}
   seq.x<-seq(min.x, max.x, (max.x-min.x)/resolution)
   seq.y<-seq(min.y, max.y, (max.x-min.x)/resolution)
   array<-dim(0)
@@ -57,9 +57,10 @@ phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function t
   array<-cbind(array,z) 
   ##make a matrix of array points that are within the 90% probability kernel
   array.order<-array[order(array[,dim(array)[2]], decreasing=TRUE),]
-  if (exists('percent')) {
-    percent<-percent/100
-  } else {percent<-0.9}
+  if (missing('percent')) {
+    percent<-90
+  }
+  percent<-percent/100
   
   for (i in 1:length(array.order[,dim(array)[2]])) {
     if (sum(array.order[1:i,dim(array)[2]])>=percent) {
