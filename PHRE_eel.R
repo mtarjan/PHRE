@@ -20,7 +20,7 @@ rasters[[2]]<-rasterFromXYZ(cbind(grid$x, grid$y, log(grid$BankDist+0.01)))
 #smoother<-cbind(c(1,0), c(0,1)) #(ATOS, 0) (0, log(dist))
 
 ##apply phre function
-HR<-phre(locs=data, rast=rasters, smooth='default', percent=90)
+HR<-phre(locs=data, rast=rasters, smoother='default', percent=90, resolution = 1000)
 
 ##plot of phre list objects
 ##zoomed in on polygons
