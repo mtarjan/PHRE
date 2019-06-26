@@ -11,7 +11,7 @@
 ##requires that packages are installed: raster, ks, amap, maptools
 ##run all code in this file and then apply function to arguments
 
-phre<-function(locs, rast, smoother, percent){ #phre is a function that uses these arguments
+phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function that uses these arguments
   library(raster) #required for rast conversion & extract
   library(ks) #required for kde
   #library(amap) #required for dist function; commented out on 6/2019; amap is not supported by R version 3.5.1
@@ -26,8 +26,10 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
   min.y<-min(locs[,2])-y.range*.5
   max.y<-max(locs[,2])+y.range*.5
   ##create coordinates for grid array (used to back-translate kde estimate)
-  seq.x<-seq(min.x, max.x, (max.x-min.x)/250)
-  seq.y<-seq(min.y, max.y, (max.x-min.x)/250)
+  ##set resolution of grid array
+  if (exists('resolution', mode="numeric")==F) {resolution<-250}
+  seq.x<-seq(min.x, max.x, (max.x-min.x)/resolution)
+  seq.y<-seq(min.y, max.y, (max.x-min.x)/resolution)
   array<-dim(0)
   for (a in 1:length(seq.x)){
     array<-rbind(array, cbind(rep(seq.x[a],length(seq.y)), seq.y))
@@ -78,6 +80,8 @@ phre<-function(locs, rast, smoother, percent){ #phre is a function that uses the
   #updated digits from 4 to 8 on 6/2019
   
   ##remove polygons that are 4 pixels or smaller
+  ##alternative is 5% of the entire home range size
+  min.poly.size<-gArea(HR.poly)*0.05
   s<-"polyID"
   HR.polys<-list(0)
   pr<-0
