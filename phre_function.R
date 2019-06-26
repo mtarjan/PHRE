@@ -11,7 +11,7 @@
 ##requires that packages are installed: raster, ks, amap, maptools
 ##run all code in this file and then apply function to arguments
 
-phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function that uses these arguments
+phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function that uses these arguments
   library(raster) #required for rast conversion & extract
   library(ks) #required for kde
   #library(amap) #required for dist function; commented out on 6/2019; amap is not supported by R version 3.5.1
@@ -44,13 +44,13 @@ phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function t
     print('Warning: Raster layers do not cover the extent of the location data')
   }
   ##calculate kernel density values at each point in the grid array; kde function is generated using landscape variables of re-sight locations
-  if (missing("smoother")) {smoother<-"default"}
-  if (smoother[1]=='default') {
+  if (missing("smooth")) {smooth<-"default"}
+  if (smooth[1]=='default') {
     kd<-kde(x=na.omit(landscape), eval.points=array[,3:ncol(array)])
   } else {
-    kd<-kde(x=na.omit(landscape), H=smoother, eval.points=array[,3:dim(array)[2]])
+    kd<-kde(x=na.omit(landscape), H=smooth, eval.points=array[,3:dim(array)[2]])
   }
-  smooth<-kd$H
+  smoother<-kd$H
   density.array<-kd$estimate
   
   ##transform density values to probability values
@@ -98,5 +98,5 @@ phre<-function(locs, rast, smoother, percent, resolution){ #phre is a function t
   HR.polys<-SpatialPolygons(list(HR.polys)) #convert to spatial polygons
   #HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
   
-  list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smooth) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
+  list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
 }
