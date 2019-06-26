@@ -47,7 +47,8 @@ rasters[[2]][]<-rasterToPoints(habitat)[,2]
 
 ##run PHRE
 ##apply phre function
-HR<-phre(locs=locs.utm@coords, rast=rasters, smoother='default', percent=90, resolution=500) ##resolution here is equal to the number of cells across the input raster, so a higher number leads to better resolution; default is 500
+HR<-phre(locs=locs.utm@coords, rast=rasters, smoother='default', percent=90, resolution=400)
+#HR<-phre(locs=locs.utm@coords, rast=rasters)##resolution here is equal to the number of cells across the input raster, so a higher number leads to better resolution; default is 500
 
 ##plot of phre list objects
 ##zoomed in on home range
