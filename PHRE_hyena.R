@@ -12,7 +12,7 @@ library(maptools) ##required for spatialpoints
 library(raster)
 
 ##prepare inputs
-data<-read.csv("C:/Users/max/Desktop/Tarjan/hyena_data/OHB09.csv")
+data<-read.csv("C:/Users/max/Desktop/Tarjan/hyena_data/OHB08.csv")
 #plot(data$LON, data$LAT)
 
 locs.ll<-subset(data, select=c("LON", "LAT"))
@@ -51,6 +51,8 @@ rm(habitat, dd) ##remove habitat from workspace to save space
 ##apply phre function
 HR<-phre(locs=locs.utm@coords, rast=rasters, smooth='default', percent=90, resolution=1500)
 #HR<-phre(locs=locs.utm@coords, rast=rasters)##resolution here is equal to the number of cells across the input raster, so a higher number leads to better resolution; default is 500
+
+#gc() ##garbage collection to free up memory
 
 ##for trouble-shooting in phre function
 #locs<-locs.utm@coords; rast<-rasters; smooth<-'default'; percent=90; resolution=1500
