@@ -78,8 +78,9 @@ phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function tha
   ##define the area of tiny fragment polygons (4 pixles or smaller)
   min.poly.size<-4*((HR.rast@extent@xmax-HR.rast@extent@xmin)/HR.rast@ncols)^2
   ##convert HR.rast to polygons, which denote the permissible home range
+  #HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=4, dissolve=T)
   HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=8, dissolve=T)
-  #updated digits from 4 to 8 on 6/2019
+  #updated digits from 4 to 8 on 6/2019; n= 16 to 8
   
   ##remove polygons that are 4 pixels or smaller
   ##alternative is 5% of the entire home range size
@@ -98,5 +99,6 @@ phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function tha
   HR.polys<-SpatialPolygons(list(HR.polys)) #convert to spatial polygons
   #HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
   
-  list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
+  #list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
+  list(Polygon=HR.polys,locs=locs,array=HR.grid, smoother=smoother) ##alternative output without array points to save space
 }
