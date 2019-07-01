@@ -99,6 +99,9 @@ phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function tha
   HR.polys<-SpatialPolygons(list(HR.polys)) #convert to spatial polygons
   #HR.polys<-gSimplify(HR.polys, tol=20) #commented out 6/2019
   
+  ##remove objects that aren't needed; testing 7/2019
+  #rm(array, array.order, HR.poly, HR.rast, HRpoints, kd, landscape, rast, density.array, z)
+  
   #list(Polygon=HR.polys,locs=locs,HRpoints=HRpoints,array=HR.grid, smoother=smoother) ##outputs; list of four elements: 1) 90% kernel polygon, 2) location data used for hr estimate, 3) array points that fall within the 90% home range, 4)all points in the array with landscape and z values
   list(Polygon=HR.polys,locs=locs,array=HR.grid, smoother=smoother) ##alternative output without array points to save space
 }
