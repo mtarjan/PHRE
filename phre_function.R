@@ -17,6 +17,7 @@ phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function tha
   #library(amap) #required for dist function; commented out on 6/2019; amap is not supported by R version 3.5.1
   library(maptools) #required for checkpolygonholes function
   library(rgeos) ##required for gSimplify; added 6/2019
+  library(spex) ##required for raster to polygon conversion
   landscape<-dim(0) #empty matrix for landscape variables
   ##define dimensions for area where the kd will be calculated
   x.range<-max(locs[,1])-min(locs[,1])
@@ -79,8 +80,13 @@ phre<-function(locs, rast, smooth, percent, resolution){ #phre is a function tha
   min.poly.size<-4*((HR.rast@extent@xmax-HR.rast@extent@xmin)/HR.rast@ncols)^2
   ##convert HR.rast to polygons, which denote the permissible home range
   #HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=4, dissolve=T)
-  HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=8, dissolve=T)
+  #HR.poly<-rasterToPolygons(HR.rast, n=16, na.rm=T, digits=8, dissolve=T)
   #updated digits from 4 to 8 on 6/2019; n= 16 to 8
+  
+  HR.poly<-spex::qm_rasterToPolygons_sp(x = HR.rast) ##creates a polygon of each raster cell?
+  ##replaced rasterToPolygons with spex function 7/2019
+  HR.poly.u<-gUnaryUnion(HR.poly) ##merge all polygons together
+  HR.poly<-HR.poly.u
   
   ##remove polygons that are 4 pixels or smaller
   ##alternative is 5% of the entire home range size

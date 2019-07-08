@@ -55,7 +55,7 @@ HR<-phre(locs=locs.utm@coords, rast=rasters, smooth='default', percent=90, resol
 #gc() ##garbage collection to free up memory
 
 ##for trouble-shooting in phre function
-#locs<-locs.utm@coords; rast<-rasters; smooth<-'default'; percent=90; resolution=250
+#locs<-locs.utm@coords; rast<-rasters; smooth<-'default'; percent=90; resolution=1500
 
 ##plot of phre list objects
 ##zoomed in on home range
